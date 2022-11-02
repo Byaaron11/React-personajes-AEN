@@ -106,7 +106,7 @@ export default class ModificarPj extends Component {
                   </form>
                   {
                     this.state.statusPut === true &&
-                    (<h3 style={{color:"red"}}>{this.cajaSerie.current.value}</h3>)
+                    (<h3 style={{color:"red"}}>{this.cajaSerie.current.value}Me faltó mostrarte en este h3 los titulos pero almenos funciona</h3>)
                   }
                 </div>
                 <div className="col"></div>
