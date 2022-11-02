@@ -3,35 +3,36 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import Global from "../Global";
 import loading from '../assets/images/loading.gif';
+import logo from '../assets/images/logo.png';
 export default class Menu extends Component {
   //Aqui voy a hacer un get de los equipos de la champions
   state = {
-    equipos: [],
-    stateEquipos: false
+    series: [],
+    statusSeries: false
   }
 
-  loadEquipos = () => {
-    var request = "/api/Equipos";
-    var url = Global.urlChampions + request;
+  loadSeries = () => {
+    var request = "/api/Series";
+    var url = Global.urlSeries + request;
     axios.get(url).then(response => {
       this.setState({
-        equipos: response.data,
-        stateEquipos: true
+        series: response.data,
+        statusSeries: true
       });
     });
   }
-
+//Este método se ejecuta al cargar la página
 componentDidMount = () => {
-  this.loadEquipos();
+  this.loadSeries();
 }
 
   render() {
     return (    
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark"> 
+      <nav style={{backgroundColor: "#e3f2fd"}} className="navbar navbar-expand-lg"> 
       {/* navbar-dark bg-dark o custom -> style={{backgroundColor: "#e3f2fd"}} pero dejando className="navbar navbar-expand-lg" */}
         <div className="container-fluid">
           <NavLink className="navbar-brand" to="/">
-            Ir a Home
+            <img src={logo} width="100" alt='...'/>
           </NavLink>
           <button
             className="navbar-toggler"
@@ -47,25 +48,25 @@ componentDidMount = () => {
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <NavLink className="nav-link active" aria-current="page" to="/hospitales">
-                  Api hospitales
+                <NavLink className="nav-link active" aria-current="page" to="/">
+                  Home
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/departamentos">
-                  Departamentos
+                <NavLink className="nav-link" to="/nuevo">
+                  Nuevo Personaje
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/apuestas">
-                  Apuestas
+                <NavLink className="nav-link" to="/modificar">
+                  Modificar Personajes
                 </NavLink>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <NavLink className="nav-link" to="/error">
                   Sin ruta ❗
                 </NavLink>
-              </li>
+              </li> */}
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -74,41 +75,22 @@ componentDidMount = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Champions
+                  Series
                 </a>
                 <ul className="dropdown-menu">
 
                   {
-                    this.state.stateEquipos === true ?
-                    (this.state.equipos.map((equipo, index)=>{
-                      return(
-                        <a key={equipo.idEquipo} className="dropdown-item" href={"/equipo/"+equipo.idEquipo}>
-                          {equipo.nombre}
+                    this.state.statusSeries === true ?
+                    (this.state.series.map((serie, index)=>{
+                      return(/* La key es para evitar que salga warning, vamos para diferenciar una etiqueta de otra */
+                        <a key={serie.idSerie} className="dropdown-item" href={"/serie/"+serie.idSerie}>
+                          {serie.nombre}
                         </a>
                       )
                     })):
                     (<img className="dropdown-item" src={loading} alt="..."/>)
                     
                   }
-
-
-
-
-                  {/* <li>
-                    <a className="dropdown-item" href="/">
-                      this.state.nombre
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="/">
-                      No uses map() si solo obtienes 1 objeto
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="/">
-                      Utiliza Axios.get(url).then(res {'=>'} setState)
-                    </a>
-                  </li> */}
                 </ul>
               </li>
             </ul>
